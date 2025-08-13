@@ -1,12 +1,22 @@
-pandas
-numpy
-scikit-learn
-matplotlib
-seaborn
-streamlit
-pyyaml
-joblib
+# Core data handling
+pandas==2.2.2
+numpy==1.26.4
 
-xgboost
-shap
-imbalanced-learn
+# Data visualization
+matplotlib==3.9.0
+seaborn==0.13.2
+
+# Machine Learning
+scikit-learn==1.5.1
+xgboost==2.1.1
+lightgbm==4.5.0
+
+# Model explainability
+shap==0.45.0
+
+# Web app deployment
+streamlit==1.37.0
+
+# Utility tools
+joblib==1.4.2
+python-dateutil==2.9.0.post0

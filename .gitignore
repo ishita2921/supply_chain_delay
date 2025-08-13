@@ -1,7 +1,0 @@
-__pycache__/
-*.pyc
-.ipynb_checkpoints/
-.env
-*.pkl
-*.h5
-.DS_Store

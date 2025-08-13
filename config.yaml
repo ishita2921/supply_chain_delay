@@ -1,7 +1,0 @@
-data_path: data/PCOS_data.csv
-target_column: PCOS (Y/N)
-model_path: models/pcod_model.pkl
-
-preprocessing:
-  scale: true
-  encoding: label
