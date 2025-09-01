@@ -57,3 +57,35 @@ We prioritize:
 - Handle missing values and encode categorical features.
 - Engineer features for better prediction (e.g., combine traffic + waiting time).
 - Train baseline model and evaluate using defined success metrics.
+
+
+
+## Day 9 — Business-Oriented Threshold & Cost Sensitivity
+
+**Objective.** Pick a decision threshold that maximizes **Recall** subject to a **Precision floor** and document our cost assumptions. Also verify and improve **probability calibration**.
+
+### Calibration
+- Method: **sigmoid**
+- Brier score (lower is better): pre = **0.0732**, post = **0.0509**
+- Reliability plot: see `reports/day9\calibration_plot.png`.
+
+### Business-Oriented Threshold (primary)
+- Precision floor: **≥ 0.55**
+- Selected threshold: **p* = 0.000** (floor met: **True**)
+- Metrics @ p*: Precision = **0.567**, Recall = **1.000**, F1 = **0.723**
+- Confusion Matrix @ p*: TP=85, FP=65, TN=0, FN=0
+
+**Rationale.** We maximize the capture of true delays while enforcing a minimum alert quality (Precision floor) to control operational noise.
+
+### Cost-Sensitive Threshold (secondary, for reference)
+- Cost matrix (unitless weights): **FN = 5.00**, **FP = 1.00**
+- Selected threshold: **t_cost = 0.166**
+- Expected misclassification cost @ t_cost: **21.00**
+- Metrics @ t_cost: Precision = **0.840**, Recall = **0.988**
+
+**Interpretation.** We assume a missed delay (FN) is ~5.0× more costly than a false alert (FP). If business priorities shift (e.g., expediting budget tightens), adjust these weights and recompute.
+
+### Plots & Artifacts
+- Precision/Recall vs Threshold: `reports/day9\precision_recall_vs_threshold.png`
+- Calibration (reliability) plot: `reports/day9\calibration_plot.png`
+- Full per-threshold table: `reports/day9\threshold_metrics.csv`

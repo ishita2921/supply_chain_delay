@@ -1,0 +1,43 @@
+{
+  "calibration": {
+    "used": "sigmoid",
+    "brier_pre": 0.07315854786517319,
+    "brier_post": 0.05094720908251471
+  },
+  "business_threshold": {
+    "min_precision": 0.55,
+    "met_precision_floor": true,
+    "threshold": 0.0,
+    "precision": 0.5666666666666667,
+    "recall": 1.0,
+    "f1": 0.723404255319149,
+    "confusion_matrix": {
+      "tp": 85,
+      "fp": 65,
+      "tn": 0,
+      "fn": 0
+    }
+  },
+  "cost_threshold": {
+    "costs": {
+      "FN": 5.0,
+      "FP": 1.0
+    },
+    "expected_cost_at_optimum": 21.0,
+    "threshold": 0.166,
+    "precision": 0.84,
+    "recall": 0.9882352941176471,
+    "f1": 0.9081081081081082,
+    "confusion_matrix": {
+      "tp": 84,
+      "fp": 16,
+      "tn": 49,
+      "fn": 1
+    }
+  },
+  "artifacts": {
+    "precision_recall_vs_threshold": "reports/day9\\precision_recall_vs_threshold.png",
+    "calibration_plot": "reports/day9\\calibration_plot.png",
+    "threshold_metrics_csv": "reports/day9\\threshold_metrics.csv"
+  }
+}
