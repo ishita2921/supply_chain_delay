@@ -267,5 +267,18 @@ def main():
     print("Metrics:\n", metrics_df)
 
 
+    best_model = name_to_model[best_name]
+
+    # Save with joblib
+    joblib.dump(best_model, here / "models" / "best_model.pkl")
+        # Save best model with joblib (preferred)
+    joblib.dump(best_model, here.parent / "artifacts" / "best_model.pkl")
+
+
+    print(f"[OK] Best model ({best_name}) saved to artifacts/best_model.pkl")
+    print("Metrics:\n", metrics_df)
+
+
+
 if __name__ == "__main__":
     main()
