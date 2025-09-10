@@ -1,0 +1,1 @@
+["latitude", "longitude", "inventory_level", "temperature", "humidity", "waiting_time", "user_transaction_amount", "user_purchase_frequency", "asset_utilization", "demand_forecast", "month", "dow", "hour", "asset_id", "shipment_status", "traffic_status", "logistics_delay_reason"]
