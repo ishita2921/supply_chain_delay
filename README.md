@@ -1,13 +1,6 @@
 # Supply Chain Delay Prediction 📦
 
-[![Run Tests](https://github.com/ishitamaithani/supply-chain-delay/actions/workflows/tests.yml/badge.svg)](https://github.com/ishitamaithani/supply-chain-delay/actions/workflows/tests.yml)
-
-
-# Supply Chain Delay Prediction
-# Supply Chain Delay Prediction
-
-![CI](https://github.com/ishita2921/supply_chain_delay/actions/workflows/tests.yml/badge.svg)
-
+[![Run Tests](https://github.com/ishita2921/supply_chain_delay/actions/workflows/tests.yml/badge.svg)](https://github.com/ishita2921/supply_chain_delay/actions/workflows/tests.yml)
 
 ## 📌 Overview
 This project aims to predict whether a shipment will be **delayed** based on operational, environmental, and demand features.  
