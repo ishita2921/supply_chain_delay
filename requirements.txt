@@ -20,3 +20,14 @@ streamlit==1.37.0
 # Utility tools
 joblib==1.4.2
 python-dateutil==2.9.0.post0
+
+
+streamlit>=1.18
+pandas>=1.5
+numpy>=1.24
+scikit-learn>=1.1
+joblib>=1.2
+matplotlib>=3.5
+plotly>=5.0
+shap>=0.42
+pytest>=7.0

@@ -10,6 +10,7 @@ import plotly.express as px
 from pathlib import Path
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
+from supply_chain import utils  # ✅ use shared helpers
 
 # Try to import shap (optional)
 try:
@@ -26,89 +27,17 @@ st.set_page_config(
 )
 
 # -------------------------------------------------------------------
-# Utility functions
+# Load data
 # -------------------------------------------------------------------
-def _to_datetime(series: pd.Series) -> pd.Series:
-    if pd.api.types.is_datetime64_any_dtype(series):
-        return series
-    return pd.to_datetime(series, errors="coerce")
-
-def _candidate_files() -> list:
-    patterns = [
-        "data/interim/*.parquet", "data/interim/*.csv",
-        "data/processed/*.parquet", "data/processed/*.csv",
-        "data/raw/*.parquet", "data/raw/*.csv",
-    ]
-    files = []
-    for p in patterns:
-        files.extend(glob.glob(p))
-    return sorted(files)
-
-def _standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
-    df = df.copy()
-    df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
-
-    if "supplier" not in df.columns:
-        df["supplier"] = "DefaultSupplier"
-    if "mode" not in df.columns:
-        df["mode"] = "Road"
-    if "region" not in df.columns:
-        df["region"] = "UnknownRegion"
-    if "event_date" not in df.columns:
-        df["event_date"] = pd.Timestamp.today().normalize()
-
-    df["event_date"] = _to_datetime(df["event_date"])
-    df["month"] = df["event_date"].dt.month
-
-    if "logistics_delay" in df.columns:
-        df["delay_flag"] = df["logistics_delay"].astype(bool)
-    else:
-        df["delay_flag"] = False
-
-    return df
-
-def get_transformed_feature_names(pipeline: Pipeline, raw_features: list) -> list:
-    out = []
-    for name, trans, cols in pipeline.transformers_:
-        if name == "remainder":
-            continue
-        if hasattr(trans, "get_feature_names_out"):
-            names = trans.get_feature_names_out(cols)
-        else:
-            names = cols
-        out.extend(names)
-    return out
-
-def clean_feature_name(name: str) -> str:
-    if "__" in name and "_" in name:
-        base = name.split("__", 1)[-1]
-        parts = base.split("_", 1)
-        if len(parts) == 2:
-            return f"{parts[0]} = {parts[1]}"
-    return name
-
-def input_value_for_transformed_feature(name: str, X_input: pd.DataFrame):
-    if "=" in name:  # OHE feature
-        feat, cat = name.split("=", 1)
-        feat = feat.strip()
-        if feat in X_input.columns:
-            return str(X_input.iloc[0][feat])
-        return cat.strip()
-    else:
-        base = name.split("__")[-1]
-        if base in X_input.columns:
-            return X_input.iloc[0][base]
-        return None
-
 @st.cache_data(show_spinner=False)
 def load_data():
-    files = _candidate_files()
+    files = utils.candidate_files()
     if not files:
         st.error("No data found under data/interim or data/processed.")
         st.stop()
     src = files[0]
     df = pd.read_parquet(src) if src.endswith(".parquet") else pd.read_csv(src)
-    return _standardize_columns(df), src
+    return utils.standardize_columns(df), src
 
 @st.cache_resource(show_spinner=False)
 def load_model_and_pipeline():
@@ -124,12 +53,6 @@ def load_model_and_pipeline():
             threshold = json.load(f).get("threshold", 0.5)
 
     return model, pipeline, threshold, raw_feature_names
-
-def predict_probability(model, pipeline, X_raw: pd.DataFrame) -> float:
-    Xt = pipeline.transform(X_raw)
-    if hasattr(model, "predict_proba"):
-        return float(model.predict_proba(Xt)[:, 1][0])
-    return float(model.predict(Xt)[0])
 
 # -------------------------------------------------------------------
 # Load data
@@ -245,7 +168,7 @@ with TAB_PRED:
 
         if submitted:
             X_input = pd.DataFrame([inputs])
-            prob = predict_probability(model, pipeline, X_input)
+            prob = utils.predict_probability(model, pipeline, X_input)
             decision = "Delayed" if prob >= threshold else "On-time"
             st.metric("Delay probability", f"{prob:.1%}")
             st.success(f"Decision: {decision}")
@@ -283,14 +206,14 @@ with TAB_PRED:
                     if base_val is None:
                         base_val = float(model.predict_proba(bg_trans)[:, 1].mean())
 
-                    trans_names = get_transformed_feature_names(pipeline, raw_features)
-                    friendly_names = [clean_feature_name(n) for n in trans_names]
+                    trans_names = utils.get_transformed_feature_names(pipeline, raw_features)
+                    friendly_names = [utils.clean_feature_name(n) for n in trans_names]
 
                     k = min(5, len(contribs))
                     top_idx = np.argsort(np.abs(contribs))[::-1][:k]
                     top_features = [friendly_names[int(i)] for i in top_idx]
                     top_vals = [float(contribs[int(i)]) for i in top_idx]
-                    top_inputs = [input_value_for_transformed_feature(f, X_input) for f in top_features]
+                    top_inputs = [utils.input_value_for_transformed_feature(f, X_input) for f in top_features]
 
                     top_df = pd.DataFrame({
                         "feature": top_features,
