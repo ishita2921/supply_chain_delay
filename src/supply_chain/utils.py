@@ -33,7 +33,6 @@ def to_datetime(series: pd.Series) -> pd.Series:
         return series
     return pd.to_datetime(series, errors="coerce")
 
-
 def standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
     """
     Clean column names and ensure required fields exist.
@@ -53,12 +52,15 @@ def standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
     df["event_date"] = to_datetime(df["event_date"])
     df["month"] = df["event_date"].dt.month
 
+    # 🚨 Fix leakage
     if "logistics_delay" in df.columns:
         df["delay_flag"] = df["logistics_delay"].astype(bool)
+        df = df.drop(columns=["logistics_delay"])  # prevent leakage
     else:
         df["delay_flag"] = False
 
     return df
+
 
 
 # -------------------------------------------------------------------

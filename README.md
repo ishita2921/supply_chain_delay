@@ -1,37 +1,47 @@
-# Supply Chain Delay Prediction 📦
+# 🚚 Supply Chain Delay Prediction
 
-[![Run Tests](https://github.com/ishita2921/supply_chain_delay/actions/workflows/tests.yml/badge.svg)](https://github.com/ishita2921/supply_chain_delay/actions/workflows/tests.yml)
-
-## 📌 Overview
-This project aims to predict whether a shipment will be **delayed** based on operational, environmental, and demand features.  
-By accurately predicting delays, logistics companies can take preventive measures to ensure timely deliveries and optimize resources.
+This project predicts **logistics and shipment delays** in a supply chain using historical smart logistics data.  
+It applies **machine learning models** to classify whether a shipment will be delayed based on factors such as traffic, weather, waiting time, and demand forecast.  
 
 ---
 
-## 🎯 Business Goal
-Build and deploy a machine learning model to:
-- Identify shipments likely to be delayed.
-- Prioritize operational interventions.
-- Reduce customer dissatisfaction and operational costs.
+## 📌 Project Overview
+- **Goal:** Help companies anticipate shipment delays and optimize logistics decisions.  
+- **Dataset:** Smart logistics dataset with features like timestamp, location, inventory, shipment status, temperature, humidity, traffic conditions, and demand forecast.  
+- **Problem Type:** Binary classification (`Delayed` vs `Not Delayed`).  
+- **Approach:** Data cleaning → Feature engineering → Model training → Evaluation → Deployment-ready artifacts.  
 
 ---
 
-## 📊 Dataset
-- **Name:** Smart Logistics Supply Chain Dataset
-- **Source:** Kaggle
-- **Target Variable:** `Logistics_Delay`  
-  - 1 → Delayed  
-  - 0 → On-time
-- **Main Features:**
-  - `Shipment_Status`, `Waiting_Time`, `Traffic_Status`, `Temperature`, `Humidity`, `Asset_Utilization`, `Demand_Forecast`, `Logistics_Delay_Reason`, GPS coordinates.
+## 🛠️ Tech Stack
+- **Languages:** Python  
+- **Libraries:** Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn, XGBoost  
+- **Database:** SQLite (for suppliers, locations, shipments management)  
+- **Models Used:** Logistic Regression, Random Forest, XGBoost  
+- **Tools:** Jupyter Notebook, VS Code  
 
 ---
 
-## 📈 Success Metrics
-- **Recall ≥ 80%**
-- **Precision ≥ 50%**
-- **ROC-AUC** score for overall performance.
+## 📊 Results
+- Best model: **Random Forest**  
+- Test Accuracy: **91%**  
+- ROC-AUC: **0.92**  
+- Precision (delays): **1.00**  
+- Recall (delays): **0.83**  
+
+✔️ Balanced results, no overfitting (no more 100% accuracy issue).  
+✔️ Useful for predicting logistics delays in real-world supply chain management.  
 
 ---
 
-## 📂 Folder Structure
+## 📈 Visualizations
+- Delay rate by traffic status  
+- Delay reasons distribution  
+- Waiting time vs Delay  
+- Environmental factors (temperature, humidity) vs Delay  
+
+All figures are saved under: `notebooks/reports/figures/`
+
+---
+
+## 📂 Project Structure
