@@ -1,4 +1,5 @@
 # 🚚 Supply Chain Delay Prediction
+[![Run Tests](https://github.com/ishitamaithani/supply-chain-delay/actions/workflows/tests.yml/badge.svg)](https://github.com/ishitamaithani/supply-chain-delay/actions/workflows/tests.yml)
 
 This project predicts **logistics and shipment delays** in a supply chain using historical smart logistics data.  
 It applies **machine learning models** to classify whether a shipment will be delayed based on factors such as traffic, weather, waiting time, and demand forecast.  
